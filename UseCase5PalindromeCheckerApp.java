@@ -1,27 +1,79 @@
-class PalindromeChecker {
+import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-    // Method to check palindrome
-    public boolean checkPalindrome(String word) {
+// Strategy Interface
+interface PalindromeStrategy {
+    boolean isPalindrome(String word);
+}
+
+// Stack based strategy
+class StackStrategy implements PalindromeStrategy {
+
+    public boolean isPalindrome(String word) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < word.length(); i++) {
+            stack.push(word.charAt(i));
+        }
 
         String reversed = "";
 
-        for (int i = word.length() - 1; i >= 0; i--) {
-            reversed = reversed + word.charAt(i);
+        while (!stack.isEmpty()) {
+            reversed += stack.pop();
         }
 
         return word.equals(reversed);
     }
 }
 
-public class UseCase11PalindromeCheckerApp {
+// Deque based strategy
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean isPalindrome(String word) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (int i = 0; i < word.length(); i++) {
+            deque.add(word.charAt(i));
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Context class
+class PalindromeChecker {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeChecker(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean check(String word) {
+        return strategy.isPalindrome(word);
+    }
+}
+
+// Main Application
+public class UseCase12PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String word = "madam";
 
-        PalindromeChecker checker = new PalindromeChecker();
+        // Choose strategy dynamically
+        PalindromeChecker checker = new PalindromeChecker(new StackStrategy());
 
-        boolean result = checker.checkPalindrome(word);
+        boolean result = checker.check(word);
 
         if (result) {
             System.out.println(word + " is a Palindrome");
