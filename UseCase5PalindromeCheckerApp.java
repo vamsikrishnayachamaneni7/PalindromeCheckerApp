@@ -1,24 +1,32 @@
-public class UseCase10PalindromeCheckerApp {
+class PalindromeChecker {
 
-    public static void main(String[] args) {
-
-        String input = "A man a plan a canal Panama";
-
-        // Normalize string (remove spaces and convert to lowercase)
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+    // Method to check palindrome
+    public boolean checkPalindrome(String word) {
 
         String reversed = "";
 
-        // Reverse the string
-        for (int i = normalized.length() - 1; i >= 0; i--) {
-            reversed = reversed + normalized.charAt(i);
+        for (int i = word.length() - 1; i >= 0; i--) {
+            reversed = reversed + word.charAt(i);
         }
 
-        // Check palindrome
-        if (normalized.equals(reversed)) {
-            System.out.println("\"" + input + "\" is a Palindrome");
+        return word.equals(reversed);
+    }
+}
+
+public class UseCase11PalindromeCheckerApp {
+
+    public static void main(String[] args) {
+
+        String word = "madam";
+
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(word);
+
+        if (result) {
+            System.out.println(word + " is a Palindrome");
         } else {
-            System.out.println("\"" + input + "\" is NOT a Palindrome");
+            System.out.println(word + " is NOT a Palindrome");
         }
     }
 }
